@@ -382,7 +382,7 @@ public class IotHubTransport implements IotHubListener
         // Notify receive thread to finish up so it doesn't survive this close
         synchronized (this.receiveThreadLock)
         {
-            this.receiveThreadLock.notifyAll();
+            this.receiveThreadLock.notify();
         }
 
         log.info("Client connection closed successfully");
@@ -1248,7 +1248,7 @@ public class IotHubTransport implements IotHubListener
             this.receivedMessagesQueue.add(message);
 
             // Wake up IotHubReceiveTask so it can handle receiving this message
-            this.receiveThreadLock.notifyAll();
+            this.receiveThreadLock.notify();
         }
     }
 

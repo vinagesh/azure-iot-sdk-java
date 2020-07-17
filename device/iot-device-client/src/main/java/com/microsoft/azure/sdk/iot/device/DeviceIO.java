@@ -220,12 +220,12 @@ public final class DeviceIO implements IotHubConnectionStatusChangeCallback
         {
             if (this.sendTaskScheduler != null)
             {
-                this.sendTaskScheduler.shutdown();
+                this.sendTaskScheduler.shutdownNow();
             }
 
             if (this.receiveTaskScheduler != null)
             {
-                this.receiveTaskScheduler.shutdown();
+                this.receiveTaskScheduler.shutdownNow();
             }
 
             /* Codes_SRS_DEVICE_IO_21_019: [The close shall close the transport.] */
@@ -452,12 +452,12 @@ public final class DeviceIO implements IotHubConnectionStatusChangeCallback
                 // No need to keep spawning send/receive tasks during reconnection or when the client is closed
                 if (this.sendTaskScheduler != null)
                 {
-                    this.sendTaskScheduler.shutdown();
+                    this.sendTaskScheduler.shutdownNow();
                 }
 
                 if (this.receiveTaskScheduler != null)
                 {
-                    this.receiveTaskScheduler.shutdown();
+                    this.receiveTaskScheduler.shutdownNow();
                 }
             }
             else if (status == IotHubConnectionStatus.CONNECTED)

@@ -96,9 +96,9 @@ public final class DeviceClient extends InternalClient implements Closeable
      * polling for messages.
      */
     @Deprecated
-    public static long RECEIVE_PERIOD_MILLIS_AMQPS = 10L;
+    public static long RECEIVE_PERIOD_MILLIS_AMQPS = 20L;
     @Deprecated
-    public static long RECEIVE_PERIOD_MILLIS_MQTT = 10L;
+    public static long RECEIVE_PERIOD_MILLIS_MQTT = 20L;
     @Deprecated
     public static long RECEIVE_PERIOD_MILLIS_HTTPS = 25*60*1000; /*25 minutes*/
 
