@@ -439,7 +439,7 @@ public class DeviceMethodTest
     }
 
     /* Tests_SRS_DEVICEMETHOD_21_013: [The invoke shall deserialize the payload using the `serializer.MethodParser`.] */
-    @Test (expected = IllegalArgumentException.class)
+    @Test (expected = IotHubException.class)
     public void invokeThrowOnCreateMethodResponseFailed(
             @Mocked final DeviceOperations request,
             @Mocked final IotHubServiceSasToken iotHubServiceSasToken)
@@ -469,9 +469,8 @@ public class DeviceMethodTest
                 return STANDARD_JSON;
             }
 
-            @Mock void fromJson(String json)
-            {
-                throw new IllegalArgumentException();
+            @Mock void fromJson(String json) throws IotHubException {
+                throw new IotHubException();
             }
         };
 
@@ -483,6 +482,7 @@ public class DeviceMethodTest
     @Test
     public void invokeSucceed(
             @Mocked final MethodParser methodParser,
+            @Mocked final HttpResponse response,
             @Mocked final DeviceOperations request,
             @Mocked final IotHubServiceSasToken iotHubServiceSasToken)
             throws Exception
@@ -512,6 +512,8 @@ public class DeviceMethodTest
         new Verifications()
         {
             {
+                response.getStatus();
+                times = 1;
                 methodParser.toJson();
                 times = 1;
                 mockedIotHubConnectionString.getUrlMethod(STANDARD_DEVICEID);
