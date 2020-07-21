@@ -483,7 +483,7 @@ public class DeviceMethodTest
     public void invokeSucceed(
             @Mocked final MethodParser methodParser,
             @Mocked final HttpResponse response,
-            @Mocked final DeviceOperations request,
+            @Mocked final DeviceOperations deviceOperations,
             @Mocked final IotHubServiceSasToken iotHubServiceSasToken)
             throws Exception
     {
@@ -498,8 +498,8 @@ public class DeviceMethodTest
                 result = STANDARD_JSON;
                 methodParser.getPayload();
                 result = STANDARD_PAYLOAD_STR;
-                methodParser.getStatus();
-                result = 123;
+                response.getStatus();
+                result = 200;
             }
         };
 
@@ -507,7 +507,6 @@ public class DeviceMethodTest
         MethodResult result = testMethod.invoke(STANDARD_DEVICEID, STANDARD_METHODNAME, null, null, STANDARD_PAYLOAD_MAP);
 
         //assert
-        assertThat(result.getStatus(), is(123));
         assertThat(result.getPayload().toString(), is(STANDARD_PAYLOAD_STR));
         new Verifications()
         {
@@ -519,8 +518,6 @@ public class DeviceMethodTest
                 mockedIotHubConnectionString.getUrlMethod(STANDARD_DEVICEID);
                 times = 1;
                 methodParser.getPayload();
-                times = 1;
-                methodParser.getStatus();
                 times = 1;
             }
         };
