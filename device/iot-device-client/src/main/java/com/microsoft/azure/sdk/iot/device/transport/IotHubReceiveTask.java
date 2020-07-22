@@ -38,29 +38,37 @@ public final class IotHubReceiveTask implements Runnable
     {
         Thread.currentThread().setName(THREAD_NAME);
 
-        try
+        if (!Thread.currentThread().isInterrupted())
         {
-            // HTTP is the only protocol where the SDK must actively poll for received messages. Because of that, never
-            // wait on the IoTHubTransport layer to notify this thread that a received message is ready to be handled.
-            if (this.transport.getProtocol() != IotHubClientProtocol.HTTPS)
+            try
             {
-                synchronized (this.receiveThreadLock)
+                // HTTP is the only protocol where the SDK must actively poll for received messages. Because of that, never
+                // wait on the IoTHubTransport layer to notify this thread that a received message is ready to be handled.
+                if (this.transport.getProtocol() != IotHubClientProtocol.HTTPS)
                 {
-                    if (!this.transport.hasReceivedMessagesToHandle() && !this.transport.isClosed())
+                    synchronized (this.receiveThreadLock)
                     {
-                        // AMQP and MQTT layers will notify the IoTHubTransport layer once a message arrives, and at
-                        // that time, this thread will be notified to handle them.
-                        this.receiveThreadLock.wait();
+                        if (!this.transport.hasReceivedMessagesToHandle() && !this.transport.isClosed())
+                        {
+                            // AMQP and MQTT layers will notify the IoTHubTransport layer once a message arrives, and at
+                            // that time, this thread will be notified to handle them.
+                            this.receiveThreadLock.wait();
+                        }
                     }
                 }
+
+                this.transport.handleMessage();
+
             }
-
-            this.transport.handleMessage();
-
-        }
-        catch (Throwable e)
-        {
-            log.warn("Receive task thread encountered exception while processing received messages", e);
+            catch(InterruptedException ex)
+            {
+                Thread.currentThread().interrupt();
+                return;
+            }
+            catch (Throwable e)
+            {
+                log.warn("Receive task thread encountered exception while processing received messages", e);
+            }
         }
     }
 }

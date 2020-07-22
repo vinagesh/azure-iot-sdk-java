@@ -37,25 +37,29 @@ public final class IotHubSendTask implements Runnable
     public void run()
     {
         Thread.currentThread().setName(THREAD_NAME);
-
-        try
+        if (!Thread.currentThread().isInterrupted())
         {
-            synchronized (this.sendThreadLock)
-            {
-                if (!this.transport.hasMessagesToSend() && !this.transport.hasCallbacksToExecute() && !this.transport.isClosed())
-                {
-                    // IotHubTransport layer will notify this thread once a message is ready to be sent or a callback is ready
-                    // to be executed. Until then, do nothing.
-                    this.sendThreadLock.wait();
+            try {
+                synchronized (this.sendThreadLock) {
+                    if (!this.transport.hasMessagesToSend() && !this.transport.hasCallbacksToExecute() && !this.transport.isClosed()) {
+                        // IotHubTransport layer will notify this thread once a message is ready to be sent or a callback is ready
+                        // to be executed. Until then, do nothing.
+                        this.sendThreadLock.wait();
+                    }
                 }
-            }
 
-            this.transport.sendMessages();
-            this.transport.invokeCallbacks();
-        }
-        catch (Throwable e)
-        {
-            log.warn("Send task encountered exception while sending messages", e);
+                this.transport.sendMessages();
+                this.transport.invokeCallbacks();
+            }
+            catch(InterruptedException ex)
+            {
+                Thread.currentThread().interrupt();
+                return;
+            }
+            catch (Throwable e)
+            {
+                log.warn("Send task encountered exception while sending messages", e);
+            }
         }
     }
 }
