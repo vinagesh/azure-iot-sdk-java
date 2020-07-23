@@ -402,42 +402,6 @@ public class DeviceMethodTests extends DeviceMethodCommon
     @Test
     @StandardTierHubOnlyTest
     @ContinuousIntegrationTest
-    public void invokeMethodOnOfflineDevice() throws Exception
-    {
-        if (testInstance.protocol != IotHubClientProtocol.HTTPS || testInstance.authenticationType != AuthenticationType.SAS)
-        {
-            // This test doesn't care what protocol the device client would use since it will be a 404 anyways.
-            // Client authentication type always has no bearing on this test, so only run it for one protocol + one authentication type
-            return;
-        }
-
-        try
-        {
-            //force the device offline
-            testInstance.deviceTestManager.client.closeNow();
-
-            if (testInstance.identity instanceof Module)
-            {
-                methodServiceClient.invoke(testInstance.identity.getDeviceId(), ((Module) testInstance.identity).getId(), DeviceEmulator.METHOD_LOOPBACK, RESPONSE_TIMEOUT, CONNECTION_TIMEOUT, null);
-            }
-            else
-            {
-                methodServiceClient.invoke(testInstance.identity.getDeviceId(), DeviceEmulator.METHOD_LOOPBACK, RESPONSE_TIMEOUT, CONNECTION_TIMEOUT, null);
-            }
-
-            Assert.fail(buildExceptionMessage("Invoking method on device or module that wasn't online should have thrown an exception", testInstance.deviceTestManager.client));
-        }
-        catch (IotHubNotFoundException actualException)
-        {
-            // Don't do anything, expected throw.
-            Assert.assertEquals(404103, actualException.getErrorCode());
-            Assert.assertEquals(ErrorCodeDescription.DeviceNotOnline, actualException.getErrorCodeDescription());
-        }
-    }
-
-    @Test
-    @StandardTierHubOnlyTest
-    @ContinuousIntegrationTest
     public void invokeMethodOnUnregisteredDevice() throws Exception
     {
         if (testInstance.authenticationType != AuthenticationType.SAS)
