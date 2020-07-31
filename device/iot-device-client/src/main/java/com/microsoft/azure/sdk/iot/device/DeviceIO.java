@@ -148,10 +148,8 @@ public final class DeviceIO
         /* Codes_SRS_DEVICE_IO_21_007: [If the client is already open, the open shall do nothing.] */
         if (this.state == IotHubClientState.OPEN)
         {
-            if (this.isOpen())
-            {
-                return;
-            }
+            return;
+        }
 
         /* Codes_SRS_DEVICE_IO_21_012: [The open shall open the transport to communicate with an IoT Hub.] */
         /* Codes_SRS_DEVICE_IO_21_015: [If an error occurs in opening the transport, the open shall throw an IOException.] */
@@ -193,15 +191,18 @@ public final class DeviceIO
         this.receiveTask = new IotHubReceiveTask(this.transport);
 
         this.taskScheduler = Executors.newScheduledThreadPool(2);
+        // Note that even though these threads are scheduled at a fixed interval, the sender/receiver threads will wait
+        // if no messages are available to process. These waiting threads will still count against the pool size defined above,
+        // so threads will not be needlessly scheduled during times when this SDK has no messages to process.
+
         // the scheduler waits until each execution is finished before
         // scheduling the next one, so executions of a given task
         // will never overlap.
 
-        // Note that this is scheduleWithFixedDelay, not scheduleAtFixedRate. There is no reason to spawn a new
-        // send/receive thread until after the previous one has finished.
-        this.sendTaskScheduler.scheduleWithFixedDelay(this.sendTask, 0,
+        /* Codes_SRS_DEVICE_IO_21_013: [The open shall schedule send tasks to run every SEND_PERIOD_MILLIS milliseconds.] */
+        this.taskScheduler.scheduleWithFixedDelay(this.sendTask, 0,
                 sendPeriodInMilliseconds, TimeUnit.MILLISECONDS);
-        this.receiveTaskScheduler.scheduleWithFixedDelay(this.receiveTask, 0,
+        this.taskScheduler.scheduleWithFixedDelay(this.receiveTask, 0,
                 receivePeriodInMilliseconds, TimeUnit.MILLISECONDS);
 
         /* Codes_SRS_DEVICE_IO_21_016: [The open shall set the `state` as `CONNECTED`.] */
@@ -220,14 +221,9 @@ public final class DeviceIO
     {
         /* Codes_SRS_DEVICE_IO_21_017: [The close shall finish all ongoing tasks.] */
         /* Codes_SRS_DEVICE_IO_21_018: [The close shall cancel all recurring tasks.] */
-        if (this.sendTaskScheduler != null)
+        if (taskScheduler  != null)
         {
-            this.sendTaskScheduler.shutdown();
-        }
-
-        if (this.receiveTaskScheduler != null)
-        {
-            this.receiveTaskScheduler.shutdown();
+            this.taskScheduler.shutdown();
         }
 
         /* Codes_SRS_DEVICE_IO_21_019: [The close shall close the transport.] */
@@ -339,7 +335,7 @@ public final class DeviceIO
                 throw new IOException("transport receive task not set");
             }
 
-            this.receiveTaskScheduler.scheduleAtFixedRate(this.receiveTask, 0,
+            this.taskScheduler.scheduleAtFixedRate(this.receiveTask, 0,
                     this.receivePeriodInMilliseconds, TimeUnit.MILLISECONDS);
         }
     }
@@ -374,15 +370,15 @@ public final class DeviceIO
         this.sendPeriodInMilliseconds = newIntervalInMilliseconds;
 
         /* Codes_SRS_DEVICE_IO_21_034: [If the task scheduler already exists, the setSendPeriodInMilliseconds shall change the `scheduleAtFixedRate` for the sendTask to the new value.] */
-        if (this.sendTaskScheduler != null)
+        if(this.taskScheduler  != null)
         {
             /* Codes_SRS_DEVICE_IO_21_035: [If the `sendTask` is null, the setSendPeriodInMilliseconds shall throw IOException.] */
-            if (this.sendTask == null)
+            if(this.sendTask == null)
             {
                 throw new IOException("transport send task not set");
             }
 
-            this.sendTaskScheduler.scheduleAtFixedRate(this.sendTask, 0,
+            this.taskScheduler .scheduleAtFixedRate(this.sendTask, 0,
                     this.sendPeriodInMilliseconds, TimeUnit.MILLISECONDS);
         }
     }
@@ -401,7 +397,7 @@ public final class DeviceIO
     /**
      * Getter for the connection state.
      *
-     * @return a boolean true if the connection is open or reconnecting, and false otherwise.
+     * @return a boolean true if the connection is open, or false if it is closed.
      */
     public boolean isOpen()
     {
