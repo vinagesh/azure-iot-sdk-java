@@ -3,11 +3,9 @@
 
 package tests.unit.com.microsoft.azure.sdk.iot.device.transport;
 
-import com.microsoft.azure.sdk.iot.device.IotHubClientProtocol;
 import com.microsoft.azure.sdk.iot.device.exceptions.DeviceClientException;
 import com.microsoft.azure.sdk.iot.device.transport.IotHubReceiveTask;
 import com.microsoft.azure.sdk.iot.device.transport.IotHubTransport;
-import mockit.Expectations;
 import mockit.Mocked;
 import mockit.NonStrictExpectations;
 import mockit.Verifications;
@@ -25,56 +23,15 @@ public class IotHubReceiveTaskTest
     // Tests_SRS_IOTHUBRECEIVETASK_11_001: [The constructor shall save the transport.]
     // Tests_SRS_IOTHUBRECEIVETASK_11_002: [The function shall poll an IoT Hub for messages, invoke the message callback if one exists, and return one of COMPLETE, ABANDON, or REJECT to the IoT Hub.]
     @Test
-    public void runReceivesAllMessages() throws DeviceClientException
+    public void runReceivesAllMessages() throws IOException, URISyntaxException, DeviceClientException
     {
-        final Object receiveThreadLock = new Object();
-        new Expectations()
-        {
-            {
-                mockTransport.getReceiveThreadLock();
-                result = receiveThreadLock;
-
-                mockTransport.hasReceivedMessagesToHandle();
-                result = true;
-
-                mockTransport.getProtocol();
-                result = IotHubClientProtocol.AMQPS;
-            }
-        };
         IotHubReceiveTask receiveTask = new IotHubReceiveTask(mockTransport);
-
-        // act
         receiveTask.run();
 
         new Verifications()
         {
             {
                 mockTransport.handleMessage();
-            }
-        };
-    }
-
-    @Test
-    public void runReceivesAllMessagesHTTP()
-    {
-        new Expectations()
-        {
-            {
-                mockTransport.getProtocol();
-                result = IotHubClientProtocol.HTTPS;
-            }
-        };
-
-        IotHubReceiveTask receiveTask = new IotHubReceiveTask(mockTransport);
-
-        // act
-        receiveTask.run();
-
-        new Verifications()
-        {
-            {
-                mockTransport.hasReceivedMessagesToHandle();
-                times = 0;
             }
         };
     }

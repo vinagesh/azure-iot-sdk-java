@@ -184,13 +184,7 @@ public final class DeviceIO implements IotHubConnectionStatusChangeCallback
         this.sendTask = new IotHubSendTask(this.transport);
         this.receiveTask = new IotHubReceiveTask(this.transport);
 
-        this.sendTaskScheduler = Executors.newScheduledThreadPool(1);
-        this.receiveTaskScheduler = Executors.newScheduledThreadPool(1);
-
-        // Note that even though these threads are scheduled at a fixed interval, the sender/receiver threads will wait
-        // if no messages are available to process. These waiting threads will still count against the pool size defined above,
-        // so threads will not be needlessly scheduled during times when this SDK has no messages to process.
-
+        this.taskScheduler = Executors.newScheduledThreadPool(2);
         // the scheduler waits until each execution is finished before
         // scheduling the next one, so executions of a given task
         // will never overlap.
