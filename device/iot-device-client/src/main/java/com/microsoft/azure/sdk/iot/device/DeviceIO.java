@@ -86,9 +86,6 @@ public final class DeviceIO implements IotHubConnectionStatusChangeCallback
 
     private List<DeviceClientConfig> deviceClientConfigs = new LinkedList<>();
 
-    // This lock is used to keep calls to open/close/connection status changes synchronous.
-    private Object stateLock = new Object();
-
     /**
      * Constructor that takes a connection string as an argument.
      *
@@ -144,21 +141,23 @@ public final class DeviceIO implements IotHubConnectionStatusChangeCallback
      */
     void open() throws IOException
     {
-        synchronized (this.stateLock)
+        /* Codes_SRS_DEVICE_IO_21_007: [If the client is already open, the open shall do nothing.] */
+        if (this.state == IotHubConnectionStatus.CONNECTED || this.state == IotHubConnectionStatus.DISCONNECTED_RETRYING)
         {
             if (this.isOpen())
             {
                 return;
             }
 
-            try
-            {
-                this.transport.open(deviceClientConfigs);
-            }
-            catch (DeviceClientException e)
-            {
-                throw new IOException("Could not open the connection", e);
-            }
+        /* Codes_SRS_DEVICE_IO_21_012: [The open shall open the transport to communicate with an IoT Hub.] */
+        /* Codes_SRS_DEVICE_IO_21_015: [If an error occurs in opening the transport, the open shall throw an IOException.] */
+        try
+        {
+            this.transport.open(deviceClientConfigs);
+        }
+        catch (DeviceClientException e)
+        {
+            throw new IOException("Could not open the connection", e);
         }
     }
 
@@ -216,32 +215,31 @@ public final class DeviceIO implements IotHubConnectionStatusChangeCallback
      */
     public void close() throws IOException
     {
-        synchronized (this.stateLock)
+        /* Codes_SRS_DEVICE_IO_21_017: [The close shall finish all ongoing tasks.] */
+        /* Codes_SRS_DEVICE_IO_21_018: [The close shall cancel all recurring tasks.] */
+        if (this.sendTaskScheduler != null)
         {
-            if (this.sendTaskScheduler != null)
-            {
-                this.sendTaskScheduler.shutdown();
-            }
-
-            if (this.receiveTaskScheduler != null)
-            {
-                this.receiveTaskScheduler.shutdown();
-            }
-
-            /* Codes_SRS_DEVICE_IO_21_019: [The close shall close the transport.] */
-            try
-            {
-                this.transport.close(IotHubConnectionStatusChangeReason.CLIENT_CLOSE, null);
-            }
-            catch (DeviceClientException e)
-            {
-                this.state = IotHubConnectionStatus.DISCONNECTED;
-                throw new IOException(e);
-            }
-
-            /* Codes_SRS_DEVICE_IO_21_021: [The close shall set the `state` as `CLOSE`.] */
-            this.state = IotHubConnectionStatus.DISCONNECTED;
+            this.sendTaskScheduler.shutdown();
         }
+
+        if (this.receiveTaskScheduler != null)
+        {
+            this.receiveTaskScheduler.shutdown();
+        }
+
+        /* Codes_SRS_DEVICE_IO_21_019: [The close shall close the transport.] */
+        try
+        {
+            this.transport.close(IotHubConnectionStatusChangeReason.CLIENT_CLOSE, null);
+        }
+        catch (DeviceClientException e)
+        {
+            this.state = IotHubConnectionStatus.DISCONNECTED;
+            throw new IOException(e);
+        }
+
+        /* Codes_SRS_DEVICE_IO_21_021: [The close shall set the `state` as `CLOSE`.] */
+        this.state = IotHubConnectionStatus.DISCONNECTED;
     }
 
     /**
@@ -445,28 +443,25 @@ public final class DeviceIO implements IotHubConnectionStatusChangeCallback
     @Override
     public void execute(IotHubConnectionStatus status, IotHubConnectionStatusChangeReason statusChangeReason, Throwable throwable, Object callbackContext)
     {
-        synchronized (this.stateLock)
+        if (status == IotHubConnectionStatus.DISCONNECTED || status == IotHubConnectionStatus.DISCONNECTED_RETRYING)
         {
-            if (status == IotHubConnectionStatus.DISCONNECTED || status == IotHubConnectionStatus.DISCONNECTED_RETRYING)
+            // No need to keep spawning send/receive tasks during reconnection or when the client is closed
+            if (this.sendTaskScheduler != null)
             {
-                // No need to keep spawning send/receive tasks during reconnection or when the client is closed
-                if (this.sendTaskScheduler != null)
-                {
-                    this.sendTaskScheduler.shutdown();
-                }
-
-                if (this.receiveTaskScheduler != null)
-                {
-                    this.receiveTaskScheduler.shutdown();
-                }
-            }
-            else if (status == IotHubConnectionStatus.CONNECTED)
-            {
-                // Restart the task scheduler so that send/receive tasks start spawning again
-                this.startWorkerThreads();
+                this.sendTaskScheduler.shutdown();
             }
 
-            this.state = status;
+            if (this.receiveTaskScheduler != null)
+            {
+                this.receiveTaskScheduler.shutdown();
+            }
         }
+        else if (status == IotHubConnectionStatus.CONNECTED)
+        {
+            // Restart the task scheduler so that send/receive tasks start spawning again
+            this.startWorkerThreads();
+        }
+
+        this.state = status;
     }
 }
