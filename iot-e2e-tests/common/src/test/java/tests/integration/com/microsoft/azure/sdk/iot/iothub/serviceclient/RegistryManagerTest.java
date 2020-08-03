@@ -38,7 +38,7 @@ import static tests.integration.com.microsoft.azure.sdk.iot.helpers.CorrelationD
  * Test class containing all tests to be run on JVM and android pertaining to identity CRUD.
  */
 @IotHubTest
-public class RegistryManagerTests extends IntegrationTest
+public class RegistryManagerTest extends IntegrationTest
 {
     protected static String iotHubConnectionString = "";
     private static String deviceIdPrefix = "java-crud-e2e-test-";
@@ -66,7 +66,7 @@ public class RegistryManagerTests extends IntegrationTest
         hostName = IotHubConnectionStringBuilder.createConnectionString(iotHubConnectionString).getHostName();
     }
 
-    public RegistryManagerTests.RegistryManagerTestInstance testInstance;
+    public RegistryManagerTest.RegistryManagerTestInstance testInstance;
 
     public class RegistryManagerTestInstance
     {

@@ -38,7 +38,7 @@ import static junit.framework.TestCase.fail;
  * Test class containing all tests to be run on JVM and android pertaining to Export and Import jobs.
  */
 @IotHubTest
-public class ExportImportTests extends IntegrationTest
+public class ExportImportTest extends IntegrationTest
 {
     private static final long IMPORT_EXPORT_TEST_TIMEOUT_MILLISECONDS = 8 * 60 * 1000;
     private static final long IMPORT_JOB_TIMEOUT_MILLISECONDS = 6 * 60 * 1000;

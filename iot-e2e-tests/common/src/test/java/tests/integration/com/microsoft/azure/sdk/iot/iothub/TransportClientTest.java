@@ -40,8 +40,8 @@ import static com.microsoft.azure.sdk.iot.device.IotHubStatusCode.OK_EMPTY;
 import static junit.framework.TestCase.fail;
 import static tests.integration.com.microsoft.azure.sdk.iot.helpers.CorrelationDetailsLoggingAssert.buildExceptionMessage;
 import static tests.integration.com.microsoft.azure.sdk.iot.helpers.IotHubServicesCommon.sendMessagesMultiplex;
-import static tests.integration.com.microsoft.azure.sdk.iot.iothub.TransportClientTests.STATUS.FAILURE;
-import static tests.integration.com.microsoft.azure.sdk.iot.iothub.TransportClientTests.STATUS.SUCCESS;
+import static tests.integration.com.microsoft.azure.sdk.iot.iothub.TransportClientTest.STATUS.FAILURE;
+import static tests.integration.com.microsoft.azure.sdk.iot.iothub.TransportClientTest.STATUS.SUCCESS;
 
 /**
  * Test class containing all tests to be run on JVM and android pertaining to multiplexing with the TransportClient class.
@@ -49,7 +49,7 @@ import static tests.integration.com.microsoft.azure.sdk.iot.iothub.TransportClie
  */
 @IotHubTest
 @RunWith(Parameterized.class)
-public class TransportClientTests extends IntegrationTest
+public class TransportClientTest extends IntegrationTest
 {
     //how many devices to test multiplexing with
     private static final int MAX_DEVICE_MULTIPLEX = 3;
@@ -120,7 +120,7 @@ public class TransportClientTests extends IntegrationTest
                         });
     }
 
-    public TransportClientTests(IotHubClientProtocol protocol) throws InterruptedException, IOException, IotHubException, URISyntaxException
+    public TransportClientTest(IotHubClientProtocol protocol) throws InterruptedException, IOException, IotHubException, URISyntaxException
     {
         this.testInstance = new TransportClientTestInstance(protocol);
     }
@@ -158,7 +158,7 @@ public class TransportClientTests extends IntegrationTest
 
             succeed = new AtomicBoolean();
 
-            System.out.println("TransportClientTests UUID: " + uuid);
+            System.out.println("TransportClientTest UUID: " + uuid);
 
             messageProperties = new HashMap<>(3);
             messageProperties.put("name1", "value1");

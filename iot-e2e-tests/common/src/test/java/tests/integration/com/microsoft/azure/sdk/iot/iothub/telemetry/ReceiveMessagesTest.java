@@ -39,9 +39,9 @@ import static tests.integration.com.microsoft.azure.sdk.iot.helpers.CorrelationD
  */
 @IotHubTest
 @RunWith(Parameterized.class)
-public class ReceiveMessagesTests extends ReceiveMessagesCommon
+public class ReceiveMessagesTest extends ReceiveMessagesCommon
 {
-    public ReceiveMessagesTests(IotHubClientProtocol protocol, AuthenticationType authenticationType, ClientType clientType, String publicKeyCert, String privateKey, String x509Thumbprint) throws Exception
+    public ReceiveMessagesTest(IotHubClientProtocol protocol, AuthenticationType authenticationType, ClientType clientType, String publicKeyCert, String privateKey, String x509Thumbprint) throws Exception
     {
         super(protocol, authenticationType, clientType, publicKeyCert, privateKey, x509Thumbprint);
     }

@@ -34,7 +34,7 @@ import static tests.integration.com.microsoft.azure.sdk.iot.helpers.CorrelationD
 
 @IotHubTest
 @RunWith(Parameterized.class)
-public class HubTierConnectionTests extends IntegrationTest
+public class HubTierConnectionTest extends IntegrationTest
 {
     protected static final long WAIT_FOR_DISCONNECT_TIMEOUT_MILLISECONDS = 1 * 60 * 1000; // 1 minute
 
@@ -57,7 +57,7 @@ public class HubTierConnectionTests extends IntegrationTest
 
     protected static RegistryManager registryManager;
 
-    public HubTierConnectionTests(DeviceClient client, IotHubClientProtocol protocol, BaseDevice identity, AuthenticationType authenticationType, String publicKeyCert, String privateKey, String x509Thumbprint, boolean useHttpProxy)
+    public HubTierConnectionTest(DeviceClient client, IotHubClientProtocol protocol, BaseDevice identity, AuthenticationType authenticationType, String publicKeyCert, String privateKey, String x509Thumbprint, boolean useHttpProxy)
     {
         this.testInstance = new HubTierConnectionTestInstance(client, protocol, identity, authenticationType, publicKeyCert, privateKey, x509Thumbprint, useHttpProxy);
     }

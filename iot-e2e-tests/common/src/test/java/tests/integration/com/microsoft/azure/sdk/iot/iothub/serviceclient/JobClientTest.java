@@ -34,7 +34,7 @@ import static org.junit.Assert.*;
  * Test class containing all tests to be run on JVM and android pertaining to method and twin jobs.
  */
 @IotHubTest
-public class JobClientTests extends IntegrationTest
+public class JobClientTest extends IntegrationTest
 {
     protected static String iotHubConnectionString = "";
     public static boolean isBasicTierHub;

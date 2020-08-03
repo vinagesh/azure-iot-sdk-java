@@ -19,9 +19,9 @@ import java.util.Collection;
 @NotThreadSafe
 @DeviceProvisioningServiceTest
 @RunWith(Parameterized.class)
-public class ProvisioningTPMTests extends ProvisioningTests
+public class ProvisioningTPMTest extends ProvisioningTest
 {
-    public ProvisioningTPMTests(ProvisioningDeviceClientTransportProtocol protocol, AttestationType attestationType)
+    public ProvisioningTPMTest(ProvisioningDeviceClientTransportProtocol protocol, AttestationType attestationType)
     {
         super(protocol, attestationType);
     }

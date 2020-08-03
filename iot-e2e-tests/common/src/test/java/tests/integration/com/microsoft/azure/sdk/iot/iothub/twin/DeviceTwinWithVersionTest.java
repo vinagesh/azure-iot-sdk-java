@@ -46,7 +46,7 @@ import static tests.integration.com.microsoft.azure.sdk.iot.helpers.CorrelationD
  */
 @IotHubTest
 @RunWith(Parameterized.class)
-public class DeviceTwinWithVersionTests extends IntegrationTest
+public class DeviceTwinWithVersionTest extends IntegrationTest
 {
     @Parameterized.Parameters(name = "{0}")
     public static Collection inputs() throws IOException
@@ -184,7 +184,7 @@ public class DeviceTwinWithVersionTests extends IntegrationTest
 
     public DeviceTwinWithVersionTestInstance testInstance;
 
-    public DeviceTwinWithVersionTests(IotHubClientProtocol protocol) throws IOException
+    public DeviceTwinWithVersionTest(IotHubClientProtocol protocol) throws IOException
     {
         this.testInstance = new DeviceTwinWithVersionTestInstance(protocol);
     }

@@ -15,7 +15,7 @@ import static org.junit.Assert.assertEquals;
 
 /** Integration tests for Signature. */
 @IotHubTest
-public class SignatureTests extends IntegrationTest
+public class SignatureTest extends IntegrationTest
 {
     @Test
     public void signatureIsCorrect()

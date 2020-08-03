@@ -18,7 +18,7 @@ import static org.junit.Assert.assertThat;
 
 /** Integration tests for IotHubEventUri. */
 @IotHubTest
-public class IotHubEventUriTests extends IntegrationTest
+public class IotHubEventUriTest extends IntegrationTest
 {
     @Test
     public void eventUriIsCorrect() throws URISyntaxException

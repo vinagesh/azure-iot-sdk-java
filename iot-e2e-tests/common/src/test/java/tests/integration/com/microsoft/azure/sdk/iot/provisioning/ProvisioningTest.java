@@ -52,9 +52,9 @@ import static org.junit.Assert.assertTrue;
 
 @DeviceProvisioningServiceTest
 @RunWith(Parameterized.class)
-public class ProvisioningTests extends ProvisioningCommon
+public class ProvisioningTest extends ProvisioningCommon
 {
-    public ProvisioningTests(ProvisioningDeviceClientTransportProtocol protocol, AttestationType attestationType)
+    public ProvisioningTest(ProvisioningDeviceClientTransportProtocol protocol, AttestationType attestationType)
     {
         super(protocol, attestationType);
     }

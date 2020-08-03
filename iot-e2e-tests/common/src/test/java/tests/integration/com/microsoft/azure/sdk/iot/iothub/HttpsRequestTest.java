@@ -22,7 +22,7 @@ import static org.junit.Assert.assertThat;
 
 /** Integration tests for HttpsRequest. */
 @IotHubTest
-public class HttpsRequestTests extends IntegrationTest
+public class HttpsRequestTest extends IntegrationTest
 {
     @Test
     public void sendHttpsRequestGetsCorrectResponse() throws IOException, TransportException

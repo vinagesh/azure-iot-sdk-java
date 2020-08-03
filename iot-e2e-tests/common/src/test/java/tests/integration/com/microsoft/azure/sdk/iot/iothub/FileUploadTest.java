@@ -43,8 +43,8 @@ import static com.microsoft.azure.sdk.iot.device.IotHubStatusCode.OK_EMPTY;
 import static junit.framework.TestCase.fail;
 import static org.junit.Assert.*;
 import static tests.integration.com.microsoft.azure.sdk.iot.helpers.CorrelationDetailsLoggingAssert.buildExceptionMessage;
-import static tests.integration.com.microsoft.azure.sdk.iot.iothub.FileUploadTests.STATUS.FAILURE;
-import static tests.integration.com.microsoft.azure.sdk.iot.iothub.FileUploadTests.STATUS.SUCCESS;
+import static tests.integration.com.microsoft.azure.sdk.iot.iothub.FileUploadTest.STATUS.FAILURE;
+import static tests.integration.com.microsoft.azure.sdk.iot.iothub.FileUploadTest.STATUS.SUCCESS;
 
 /**
  * Test class containing all tests to be run on JVM and android pertaining to FileUpload.
@@ -52,7 +52,7 @@ import static tests.integration.com.microsoft.azure.sdk.iot.iothub.FileUploadTes
 @FlakeyTest
 @IotHubTest
 @RunWith(Parameterized.class)
-public class FileUploadTests extends IntegrationTest
+public class FileUploadTest extends IntegrationTest
 {
     // Max time to wait to see it on Hub
     private static final long MAXIMUM_TIME_TO_WAIT_FOR_IOTHUB_MILLISECONDS = 180000; // 3 minutes
@@ -114,7 +114,7 @@ public class FileUploadTests extends IntegrationTest
                         });
     }
 
-    public FileUploadTests(IotHubClientProtocol protocol, AuthenticationType authenticationType, boolean withProxy) throws IOException
+    public FileUploadTest(IotHubClientProtocol protocol, AuthenticationType authenticationType, boolean withProxy) throws IOException
     {
         this.testInstance = new FileUploadTestInstance(protocol, authenticationType, withProxy);
     }

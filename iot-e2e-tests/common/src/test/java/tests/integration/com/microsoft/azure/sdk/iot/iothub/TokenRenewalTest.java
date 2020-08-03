@@ -36,7 +36,7 @@ import static com.microsoft.azure.sdk.iot.device.IotHubClientProtocol.*;
 import static junit.framework.TestCase.assertTrue;
 
 @IotHubTest
-public class TokenRenewalTests extends IntegrationTest
+public class TokenRenewalTest extends IntegrationTest
 {
     protected static String iotHubConnectionString;
     private static RegistryManager registryManager;
@@ -51,7 +51,7 @@ public class TokenRenewalTests extends IntegrationTest
 
     private static final int TOKEN_RENEWAL_TEST_TIMEOUT_MILLISECONDS = 17 * 60 * 1000;
 
-    public TokenRenewalTests()
+    public TokenRenewalTest()
     {
         timeout = new Timeout(TOKEN_RENEWAL_TEST_TIMEOUT_MILLISECONDS);
     }

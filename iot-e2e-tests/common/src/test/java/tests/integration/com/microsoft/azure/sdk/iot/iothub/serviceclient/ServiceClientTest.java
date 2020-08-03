@@ -37,7 +37,7 @@ import static tests.integration.com.microsoft.azure.sdk.iot.helpers.CorrelationD
  */
 @IotHubTest
 @RunWith(Parameterized.class)
-public class ServiceClientTests extends IntegrationTest
+public class ServiceClientTest extends IntegrationTest
 {
     protected static String iotHubConnectionString = "";
     protected static String invalidCertificateServerConnectionString = "";
@@ -51,7 +51,7 @@ public class ServiceClientTests extends IntegrationTest
 
     private static final long MAX_TEST_MILLISECONDS = 1 * 60 * 1000;
 
-    public ServiceClientTests(IotHubServiceClientProtocol protocol)
+    public ServiceClientTest(IotHubServiceClientProtocol protocol)
     {
         this.testInstance = new ServiceClientITRunner(protocol);
     }

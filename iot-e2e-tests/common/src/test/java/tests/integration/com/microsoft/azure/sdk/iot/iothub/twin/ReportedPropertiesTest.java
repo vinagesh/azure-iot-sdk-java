@@ -38,9 +38,9 @@ import static org.junit.Assert.fail;
  */
 @IotHubTest
 @RunWith(Parameterized.class)
-public class ReportedPropertiesTests extends DeviceTwinCommon
+public class ReportedPropertiesTest extends DeviceTwinCommon
 {
-    public ReportedPropertiesTests(IotHubClientProtocol protocol, AuthenticationType authenticationType, ClientType clientType, String publicKeyCert, String privateKey, String x509Thumbprint)
+    public ReportedPropertiesTest(IotHubClientProtocol protocol, AuthenticationType authenticationType, ClientType clientType, String publicKeyCert, String privateKey, String x509Thumbprint)
     {
         super(protocol, authenticationType, clientType, publicKeyCert, privateKey, x509Thumbprint);
     }

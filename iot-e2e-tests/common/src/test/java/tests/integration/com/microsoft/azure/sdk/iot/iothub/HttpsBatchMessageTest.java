@@ -20,7 +20,7 @@ import static org.junit.Assert.assertTrue;
 
 /** Integration tests for HttpsBatchMessage. */
 @IotHubTest
-public class HttpsBatchMessageTests extends IntegrationTest
+public class HttpsBatchMessageTest extends IntegrationTest
 {
     protected Charset UTF8 = StandardCharsets.UTF_8;
 

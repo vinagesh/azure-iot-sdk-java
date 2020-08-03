@@ -16,7 +16,7 @@ import org.junit.BeforeClass;
 import org.junit.runners.Parameterized;
 import tests.integration.com.microsoft.azure.sdk.iot.helpers.Tools;
 import tests.integration.com.microsoft.azure.sdk.iot.helpers.*;
-import tests.integration.com.microsoft.azure.sdk.iot.iothub.telemetry.ReceiveMessagesTests;
+import tests.integration.com.microsoft.azure.sdk.iot.iothub.telemetry.ReceiveMessagesTest;
 
 import javax.net.ssl.SSLContext;
 import java.io.IOException;
@@ -269,7 +269,7 @@ public class ReceiveMessagesCommon extends IntegrationTest
         public IotHubMessageResult execute(com.microsoft.azure.sdk.iot.device.Message msg, Object context)
         {
             Boolean resultValue = true;
-            HashMap<String, String> messageProperties = (HashMap<String, String>) ReceiveMessagesTests.messageProperties;
+            HashMap<String, String> messageProperties = (HashMap<String, String>) ReceiveMessagesTest.messageProperties;
             Success messageReceived = (Success)context;
             if (!hasExpectedProperties(msg, messageProperties) || !hasExpectedSystemProperties(msg))
             {
@@ -286,7 +286,7 @@ public class ReceiveMessagesCommon extends IntegrationTest
     {
         public IotHubMessageResult execute(com.microsoft.azure.sdk.iot.device.Message msg, Object context)
         {
-            HashMap<String, String> messageProperties = (HashMap<String, String>) ReceiveMessagesTests.messageProperties;
+            HashMap<String, String> messageProperties = (HashMap<String, String>) ReceiveMessagesTest.messageProperties;
             Success messageReceived = (Success)context;
             if (hasExpectedProperties(msg, messageProperties) && hasExpectedSystemProperties(msg))
             {
