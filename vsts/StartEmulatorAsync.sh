@@ -21,12 +21,3 @@ $ANDROID_HOME/emulator/emulator -list-avds
 echo ''
 echo "Starting emulator in background thread"
 nohup $ANDROID_HOME/emulator/emulator -avd $avdName -no-snapshot > /dev/null 2>&1 &
-
-echo ''
-echo 'Waiting for emulator to boot up...'
-$ANDROID_HOME/platform-tools/adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed | tr -d '\r') ]]; do sleep 1; done; input keyevent 82'
-echo ''
-echo "Emulator started"
-
-$ANDROID_HOME/platform-tools/adb devices
-
