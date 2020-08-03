@@ -30,24 +30,8 @@ jobs:
           IS_BASIC_TIER_HUB: $(IS-BASIC-TIER-HUB)
           TARGET_BRANCH: $(System.PullRequest.TargetBranch)
 
-      # Android emulator is not ready to use after this task completes. Later on a task will wait for the android emulator
-      # to be ready to use before continuing. Since starting the emulator can be done in a background thread, we'll check
-      # back on it later after building the test APKs
-      - task: Bash@3
-        condition: eq(variables['task.android.needToRunTestGroup'], 'yes')
-        displayName: 'Asynchronously Start Android Emulator'
-        timeoutInMinutes: 10
-        continueOnError: false
-        inputs:
-          targetType: 'filePath'
-          filePath: '$(Build.SourcesDirectory)/vsts/StartEmulatorAsync.sh'
-
-      - powershell: ./vsts/build_e2e_tests.sh
-        displayName: 'E2E Tests Build'
-        condition: always()
-
       - powershell: ./vsts/gradle_build.sh
-        displayName: 'Gradle Build'
+        displayName: 'Gradle Build and Start Emulator'
         env:
           IOTHUB_CONNECTION_STRING: $(ANDROID-IOTHUB-CONNECTION-STRING)
           STORAGE_ACCOUNT_CONNECTION_STRING: $(STORAGE-ACCOUNT-CONNECTION-STRING)
@@ -61,15 +45,6 @@ jobs:
           IS_BASIC_TIER_HUB: $(IS-BASIC-TIER-HUB)
           TARGET_BRANCH: $(System.PullRequest.TargetBranch)
         condition: always()
-
-      - task: Bash@3
-        condition: eq(variables['task.android.needToRunTestGroup'], 'yes')
-        displayName: 'Wait For Android Emulator To Start'
-        timeoutInMinutes: 30
-        continueOnError: false
-        inputs:
-          targetType: 'filePath'
-          filePath: '$(Build.SourcesDirectory)/vsts/WaitForEmulatorToBeReady.sh'
 
       - task: Bash@3
         #only run tests on emulator if tests should be run, and if the emulator boot up was successful
