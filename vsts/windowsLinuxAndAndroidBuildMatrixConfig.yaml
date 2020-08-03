@@ -18,7 +18,6 @@ jobs:
           ANDROID_TEST_GROUP_ID: TestGroup4
 
     displayName: Android Test
-    dependsOn: AndroidBuild
     steps:
       - task: PowerShell@2
         displayName: 'determine if testing needed'
