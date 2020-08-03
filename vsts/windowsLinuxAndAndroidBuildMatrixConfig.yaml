@@ -12,10 +12,6 @@ jobs:
           ANDROID_TEST_GROUP_ID: TestGroup1
         TestGroup2:
           ANDROID_TEST_GROUP_ID: TestGroup2
-        TestGroup3:
-          ANDROID_TEST_GROUP_ID: TestGroup3
-        TestGroup4:
-          ANDROID_TEST_GROUP_ID: TestGroup4
 
     displayName: Android Test
     steps:
