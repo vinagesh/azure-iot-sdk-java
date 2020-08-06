@@ -15,17 +15,6 @@ jobs:
 
     displayName: Android Test
     steps:
-      - task: PowerShell@2
-        displayName: 'determine if testing needed'
-        condition: always()
-        inputs:
-          targetType: 'filePath'
-          filePath: ./vsts/determine_if_android_test_group_needs_to_run.ps1
-        env:
-          TEST_GROUP_ID: $(ANDROID_TEST_GROUP_ID)
-          IS_BASIC_TIER_HUB: $(IS-BASIC-TIER-HUB)
-          TARGET_BRANCH: $(System.PullRequest.TargetBranch)
-
       - powershell: ./vsts/gradle_build.sh
         displayName: 'Gradle Build and Start Emulator'
         env:
