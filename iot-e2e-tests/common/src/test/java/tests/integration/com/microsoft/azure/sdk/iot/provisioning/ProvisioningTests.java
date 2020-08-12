@@ -420,6 +420,7 @@ public class ProvisioningTests extends ProvisioningCommon
             {
                 testInstance.provisioningServiceClient.deleteIndividualEnrollment(testInstance.individualEnrollment.getRegistrationId());
             }
+
         }
         catch (Exception e)
         {

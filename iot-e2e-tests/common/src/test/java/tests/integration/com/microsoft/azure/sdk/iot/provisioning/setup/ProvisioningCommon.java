@@ -25,6 +25,7 @@ import com.microsoft.azure.sdk.iot.service.devicetwin.DeviceTwinDevice;
 import com.microsoft.azure.sdk.iot.service.devicetwin.Query;
 import com.microsoft.azure.sdk.iot.service.exceptions.IotHubException;
 import junit.framework.AssertionFailedError;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -45,6 +46,7 @@ import static com.microsoft.azure.sdk.iot.provisioning.device.ProvisioningDevice
 import static junit.framework.TestCase.fail;
 import static org.junit.Assert.*;
 
+@Slf4j
 public class ProvisioningCommon extends IntegrationTest
 {
     // Called from JVM runner
@@ -418,6 +420,7 @@ public class ProvisioningCommon extends IntegrationTest
             {
                 if (provisioningStatus != null && provisioningStatus.provisioningDeviceClient != null)
                 {
+                    log.debug("***************Closing provisioning device client now ....");
                     provisioningStatus.provisioningDeviceClient.closeNow();
                 }
             }
