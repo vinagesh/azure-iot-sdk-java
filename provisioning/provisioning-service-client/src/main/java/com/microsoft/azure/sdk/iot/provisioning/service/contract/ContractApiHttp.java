@@ -13,6 +13,7 @@ import com.microsoft.azure.sdk.iot.provisioning.service.auth.ProvisioningSasToke
 import com.microsoft.azure.sdk.iot.provisioning.service.exceptions.ProvisioningServiceClientExceptionManager;
 import com.microsoft.azure.sdk.iot.provisioning.service.exceptions.ProvisioningServiceClientException;
 import com.microsoft.azure.sdk.iot.provisioning.service.exceptions.ProvisioningServiceClientTransportException;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -55,6 +56,7 @@ import java.util.Map;
  * </pre>
  *
  */
+@Slf4j
 public class ContractApiHttp
 {
     private static final Integer DEFAULT_HTTP_TIMEOUT_MS = 24000;
@@ -143,6 +145,7 @@ public class ContractApiHttp
         /* SRS_HTTP_DEVICE_REGISTRATION_CLIENT_21_007: [The request shall create a HTTP URL based on the Device Registration path.*/
         URL url = getUrlForPath(path);
 
+        log.debug("*************** url : {}, method: {}, payload: {}", url, httpMethod, payload);
         /* SRS_HTTP_DEVICE_REGISTRATION_CLIENT_21_010: [The request shall create a new HttpRequest.*/
         HttpRequest request = createRequest(url, httpMethod, headerParameters, payload.getBytes(), sasTokenString);
 
@@ -179,12 +182,19 @@ public class ContractApiHttp
         /* SRS_HTTP_DEVICE_REGISTRATION_CLIENT_21_012: [The request shall fill the http header with the standard parameters.] */
         request.setReadTimeoutMillis(DEFAULT_HTTP_TIMEOUT_MS);
         request.setHeaderField(HEADER_FIELD_NAME_AUTHORIZATION, sasToken);
+        log.debug("*************** authorization : {}", sasToken);
         request.setHeaderField(HEADER_FIELD_NAME_USER_AGENT, SDKUtils.getUserAgentString());
+        log.debug("*************** User-Agent : {}", SDKUtils.getUserAgentString());
         request.setHeaderField(HEADER_FIELD_NAME_REQUEST_ID, HEADER_FIELD_VALUE_REQUEST_ID);
+        log.debug("*************** Request-Id : {}", HEADER_FIELD_VALUE_REQUEST_ID);
         request.setHeaderField(HEADER_FIELD_NAME_ACCEPT, HEADER_FIELD_VALUE_ACCEPT);
+        log.debug("*************** Accept : {}", HEADER_FIELD_VALUE_ACCEPT);
         request.setHeaderField(HEADER_FIELD_NAME_CONTENT_TYPE, HEADER_FIELD_VALUE_CONTENT_TYPE);
+        log.debug("*************** Content-Type : {}", HEADER_FIELD_VALUE_CONTENT_TYPE);
         request.setHeaderField(HEADER_FIELD_NAME_CHARSET, HEADER_FIELD_VALUE_CHARSET);
+        log.debug("*************** charset : {}", HEADER_FIELD_VALUE_CHARSET);
         request.setHeaderField(HEADER_FIELD_NAME_CONTENT_LENGTH, payload != null ? String.valueOf(payload.length) : "0");
+        log.debug("*************** Content-Length : {}", payload != null ? String.valueOf(payload.length) : "0");
 
         /* SRS_HTTP_DEVICE_REGISTRATION_CLIENT_21_013: [The request shall add the headerParameters to the http header, if provided.] */
         if(headerParameters != null)
