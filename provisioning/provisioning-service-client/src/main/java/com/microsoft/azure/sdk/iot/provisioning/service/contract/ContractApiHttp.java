@@ -200,7 +200,7 @@ public class ContractApiHttp
         request.setHeaderField(HEADER_FIELD_NAME_CHARSET, HEADER_FIELD_VALUE_CHARSET);
 //        log.debug("*************** charset : {}", HEADER_FIELD_VALUE_CHARSET);
         request.setHeaderField(HEADER_FIELD_NAME_CONTENT_LENGTH, payload != null ? String.valueOf(payload.length) : "0");
-        log.debug("*************** Content-Length : {}", payload != null ? String.valueOf(payload.length) : "0");
+        log.debug("*************** Content-Length : {}, method : {}", payload != null ? String.valueOf(payload.length) : "0", method);
 
         /* SRS_HTTP_DEVICE_REGISTRATION_CLIENT_21_013: [The request shall add the headerParameters to the http header, if provided.] */
         if(headerParameters != null)

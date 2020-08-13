@@ -370,6 +370,7 @@ public class ProvisioningCommon extends IntegrationTest
                 provisioningStatus.provisioningDeviceClient = ProvisioningDeviceClient.create(globalEndpoint, provisioningServiceIdScope,
                         protocol,
                         securityProvider);
+                log.debug("**********Creating provisioningDeviceClient with payload {}", jsonPayload);
 
                 if (jsonPayload == null)
                 {
