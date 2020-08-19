@@ -5,4 +5,5 @@
 # For all other builds (nightly builds, for instance), this script will set environment variables to run all e2e tests.
 
 Write-Host "Determining tests to run..."
+$Env:runIotHubTests = "false"
 $Env:runProvisioningTests = "true"
