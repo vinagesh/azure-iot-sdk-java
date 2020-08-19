@@ -45,6 +45,7 @@ import java.net.URISyntaxException;
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 import static com.microsoft.azure.sdk.iot.provisioning.device.ProvisioningDeviceClientTransportProtocol.*;
 import static junit.framework.TestCase.fail;
@@ -55,6 +56,7 @@ import static org.junit.Assert.assertTrue;
 @RunWith(Parameterized.class)
 public class ProvisioningTests extends ProvisioningCommon
 {
+
     public ProvisioningTests(ProvisioningDeviceClientTransportProtocol protocol, AttestationType attestationType)
     {
         super(protocol, attestationType);
