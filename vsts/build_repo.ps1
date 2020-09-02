@@ -12,5 +12,4 @@ else
     Write-Host "Pull request build detected"
 }
 
-mvn install -T 2C `-Dmaven.javadoc.skip'
-mvn -Dtest=ProvisioningTests test
+mvn -DRUN_PROVISIONING_TESTS="$Env:runProvisioningTests" install -T 2C `-Dmaven.javadoc.skip
