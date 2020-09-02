@@ -67,7 +67,7 @@ public abstract class IntegrationTest
     public static boolean isPullRequest;
 
     //By default, run all tests. Even if env vars aren't set
-    public static boolean runIotHubTests = Boolean.parseBoolean(Tools.retrieveEnvironmentVariableValue("RUN_IOTHUB_TESTS", "true"));
+    public static boolean runIotHubTests = false;
     public static boolean runProvisioningTests = Boolean.parseBoolean(Tools.retrieveEnvironmentVariableValue("RUN_PROVISIONING_TESTS", "true"));
 
     // Infinite read timeout for all http operations
