@@ -122,6 +122,7 @@ public class AmqpsConnection extends ErrorLoggingBaseHandlerWithCleanup
     /**
      * Returns the status of the connection
      * @return status of the connection
+     * @throws Exception This exception is thrown if amqp connection was not successful
      */
     public boolean isConnected() throws Exception
     {

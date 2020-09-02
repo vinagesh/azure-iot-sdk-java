@@ -41,6 +41,9 @@ public class FileUploadSasUriRequest
 
     /**
      * Set the blob name that will be created in Azure Storage to upload to.
+     *
+     * @param blobName is the name of the blob (file name in the blob) that IoT Hub will make Azure Storage
+     *                 create for this file upload. This field is mandatory
      */
     public void setBlobName(String blobName)
     {
