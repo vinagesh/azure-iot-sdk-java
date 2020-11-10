@@ -3,6 +3,7 @@
 
 package com.microsoft.azure.sdk.iot.device.transport.amqps;
 
+import com.microsoft.azure.sdk.iot.device.BatchMessage;
 import com.microsoft.azure.sdk.iot.device.Message;
 import com.microsoft.azure.sdk.iot.device.MessageProperty;
 import com.microsoft.azure.sdk.iot.device.exceptions.ProtocolException;
@@ -18,7 +19,9 @@ import org.apache.qpid.proton.message.impl.MessageImpl;
 import org.apache.qpid.proton.reactor.FlowController;
 
 import java.nio.BufferOverflowException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -146,9 +149,27 @@ public abstract class AmqpsSenderLinkHandler extends BaseHandler
         }
     }
 
+    MessageImpl makeOneGiantProtonMessage(Iterable<MessageImpl> allMessages) {
+        return allMessages.iterator().next();
+    }
+
     AmqpsSendResult sendMessageAndGetDeliveryTag(Message iotHubMessage)
     {
-        MessageImpl protonMessage = this.iotHubMessageToProtonMessage(iotHubMessage);
+        MessageImpl protonMessage = null;
+        // If message is a bulk message, we translate all of them to proton first
+        if (iotHubMessage instanceof BatchMessage) {
+            List<MessageImpl> allMessages = new ArrayList<>();
+
+            for (Message message : ((BatchMessage)iotHubMessage).getNestedMessages()) {
+                allMessages.add(this.iotHubMessageToProtonMessage(message));
+            }
+
+            protonMessage = makeOneGiantProtonMessage(allMessages);
+        }
+        else {
+            protonMessage = this.iotHubMessageToProtonMessage(iotHubMessage);
+        }
+
         AmqpsSendResult sendResult = this.sendMessageAndGetDeliveryTag(protonMessage);
         inProgressMessages.put(sendResult.getDeliveryTag(), iotHubMessage);
         return sendResult;

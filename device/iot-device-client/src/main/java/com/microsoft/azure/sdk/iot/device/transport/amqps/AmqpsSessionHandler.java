@@ -1,5 +1,6 @@
 package com.microsoft.azure.sdk.iot.device.transport.amqps;
 
+import com.microsoft.azure.sdk.iot.device.BatchMessage;
 import com.microsoft.azure.sdk.iot.device.DeviceClientConfig;
 import com.microsoft.azure.sdk.iot.device.DeviceTwin.DeviceOperations;
 import com.microsoft.azure.sdk.iot.device.Message;

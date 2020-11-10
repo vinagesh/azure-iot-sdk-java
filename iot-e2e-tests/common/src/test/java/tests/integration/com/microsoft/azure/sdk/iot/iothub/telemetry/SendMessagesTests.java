@@ -82,7 +82,7 @@ public class SendMessagesTests extends SendMessagesCommon
     public void sendManySmallMessagesAsBatch() throws Exception
     {
         // Only send batch messages in large quantities when using HTTPS protocol.
-        if (this.testInstance.protocol != HTTPS)
+        if (this.testInstance.protocol != AMQPS)
         {
             return;
         }

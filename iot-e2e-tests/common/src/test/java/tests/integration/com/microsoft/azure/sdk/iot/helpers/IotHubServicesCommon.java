@@ -108,7 +108,7 @@ public class IotHubServicesCommon
         {
             client.open();
 
-            if (protocol != IotHubClientProtocol.HTTPS)
+            if (protocol != IotHubClientProtocol.HTTPS && protocol != IotHubClientProtocol.AMQPS)
             {
                 sendMessages(client, protocol, messagesToSend,RETRY_MILLISECONDS ,SEND_TIMEOUT_MILLISECONDS,interMessageDelay, statusUpdates);
                 return;
