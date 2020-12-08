@@ -119,22 +119,7 @@ function CreateJavadocReleaseBranch(
     {
         Move-Item -Force -Path ..\deps -Destination ..\$FolderName\deps
     }
-
-    if ($UpdateDeviceClientDocs -eq "True")
-    {
-        Move-Item -Force -Path ..\device -Destination ..\$FolderName\device
-    }
-
-    if ($UpdateServiceClientDocs -eq "True")
-    {
-        Move-Item -Force -Path ..\service -Destination ..\$FolderName\service
-    }
-
-    if ($UpdateProvisioningClientDocs -eq "True")
-    {
-        Move-Item -Force -Path ..\provisioning -Destination ..\$FolderName\provisioning
-    }
-
+    
     Set-Location ..
 
     Write-Host "Removing temporary apidocs folder"
